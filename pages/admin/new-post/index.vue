@@ -1,7 +1,7 @@
 <template>
   <div class="admin-new-post-page">
     <section class="new-post-form">
-      <AdminPostForm :post="post" />
+      <AdminPostForm :post="post" @submit="onSubmitted" />
     </section>
   </div>
 </template>
@@ -21,8 +21,15 @@ export default {
         title: '',
         content: '',
         thumbnail: '',
+        previewText: '',
       },
     };
+  },
+  methods: {
+    async onSubmitted(post) {
+      await this.$store.dispatch('addPost', post);
+      this.$router.push('/admin');
+    },
   },
 };
 </script>

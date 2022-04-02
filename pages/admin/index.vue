@@ -21,27 +21,10 @@ export default {
     AppButton,
   },
   layout: 'AdminLayout',
-  data() {
-    return {
-      posts: [
-        {
-          id: '1',
-          title: 'Title 1',
-          content: 'Content 1',
-          author: 'Author 1',
-          thumbnail:
-            'https://cdn.zmescience.com/wp-content/uploads/2015/11/lines-of-code.jpg',
-        },
-        {
-          id: '2',
-          title: 'Title 2',
-          content: 'Content 2',
-          author: 'Author 2',
-          thumbnail:
-            'https://cdn.zmescience.com/wp-content/uploads/2015/11/lines-of-code.jpg',
-        },
-      ],
-    };
+  computed: {
+    posts() {
+      return this.$store.getters.posts;
+    },
   },
 };
 </script>

@@ -18,27 +18,16 @@
 
 <script>
 export default {
-  asyncData(context) {
-    return new Promise((resolve, reject) => {
-      // eslint-disable-next-line nuxt/no-timing-in-fetch-data
-      setTimeout(() => {
-        resolve(null, {
-          post: {
-            id: context.params.id,
-            title: 'Title 1 (' + context.params.id + ')',
-            content: 'Content 1',
-            author: 'Author 1',
-            thumbnail:
-              'https://cdn.zmescience.com/wp-content/uploads/2015/11/lines-of-code.jpg',
-            updatedAt: new Date(),
-          },
-        });
-      }, 1000);
-    })
-      .then((data) => data)
-      .catch(() => {
-        context.error();
-      });
+  async asyncData(context) {
+    const postId = context.params.id;
+    try {
+      const post = await context.$axios.$get(
+        `https://nuxt-blog-66f91-default-rtdb.europe-west1.firebasedatabase.app/posts/${postId}.json`
+      );
+      return { post };
+    } catch (error) {
+      context.error(error);
+    }
   },
 };
 </script>

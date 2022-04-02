@@ -8,6 +8,9 @@
     <AppControlInput v-model="editedPost.content" control-type="textarea">
       Content</AppControlInput
     >
+    <AppControlInput v-model="editedPost.previewText" control-type="textarea">
+      Preview Text</AppControlInput
+    >
     <AppButton type="submit">Save</AppButton>
     <AppButton
       type="button"
@@ -33,6 +36,7 @@ export default {
       required: true,
     },
   },
+  emits: ['submit'],
   data() {
     return {
       editedPost: this.post
@@ -42,12 +46,14 @@ export default {
             title: '',
             thumbnail: '',
             content: '',
+            previewText: '',
           },
     };
   },
   methods: {
     onSave() {
-      console.log('editedPost');
+      // without validation
+      this.$emit('submit', this.editedPost);
     },
     onCancel() {
       this.$router.push('/admin');

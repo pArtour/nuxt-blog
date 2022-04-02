@@ -14,36 +14,61 @@ const createStore = () => {
       setPosts(state, posts) {
         state.posts = posts;
       },
+      addPost(state, post) {
+        state.posts.push(post);
+      },
+      editPost(state, editedPost) {
+        const index = state.posts.findIndex(
+          (post) => post.id === editedPost.id
+        );
+        if (index !== -1) {
+          this.state.posts[index] = editedPost;
+        }
+      },
     },
 
     actions: {
       nuxtServerInit(vuexContext, context) {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            vuexContext.commit('setPosts', [
-              {
-                id: '1',
-                title: 'Title 1',
-                content: 'Content 1',
-                author: 'Author 1',
-                thumbnail:
-                  'https://cdn.zmescience.com/wp-content/uploads/2015/11/lines-of-code.jpg',
-              },
-              {
-                id: '2',
-                title: 'Title 2',
-                content: 'Content 2',
-                author: 'Author 2',
-                thumbnail:
-                  'https://cdn.zmescience.com/wp-content/uploads/2015/11/lines-of-code.jpg',
-              },
-            ]);
-            resolve();
-          }, 1500);
-        });
+        return this.$axios
+          .$get(
+            'https://nuxt-blog-66f91-default-rtdb.europe-west1.firebasedatabase.app/posts.json'
+          )
+          .then((res) => {
+            vuexContext.commit(
+              'setPosts',
+              Object.entries(res).map(([key, value]) => ({
+                ...value,
+                id: key,
+              }))
+            );
+          })
+          .catch((e) => context.error(e));
       },
       setPosts(context, posts) {
         context.commit('setPosts', posts);
+      },
+      addPost(context, post) {
+        const createdPost = { ...post, updatedAt: new Date() };
+        return this.$axios
+          .$post(
+            'https://nuxt-blog-66f91-default-rtdb.europe-west1.firebasedatabase.app/posts.json',
+            createdPost
+          )
+          .then(({ name: id }) => {
+            context.commit('addPost', { ...createdPost, id });
+          })
+          .catch((e) => console.error(e));
+      },
+      async editPost(context, { post, id }) {
+        return await this.$axios
+          .$put(
+            `https://nuxt-blog-66f91-default-rtdb.europe-west1.firebasedatabase.app/posts/${id}.json`,
+            post
+          )
+          .then(() => {
+            context.commit('editPost', { ...post, id });
+          })
+          .catch((e) => console.error(e));
       },
     },
   });
