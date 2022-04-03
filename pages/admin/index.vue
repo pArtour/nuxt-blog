@@ -4,6 +4,7 @@
       <app-button type="button" @click="$router.push('/admin/new-post')">
         Create new post
       </app-button>
+      <app-button type="button" @click="onLogout"> Logout </app-button>
     </section>
     <section class="existing-posts">
       <h1>Existing posts</h1>
@@ -21,9 +22,16 @@ export default {
     AppButton,
   },
   layout: 'AdminLayout',
+  middleware: ['check-auth', 'auth'],
   computed: {
     posts() {
       return this.$store.getters.posts;
+    },
+  },
+  methods: {
+    onLogout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/admin/auth');
     },
   },
 };
@@ -35,6 +43,10 @@ export default {
 }
 
 .new-post {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   text-align: center;
   border-bottom: 2px solid #ccc;
   padding-bottom: 10px;

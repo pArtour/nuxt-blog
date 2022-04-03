@@ -20,8 +20,10 @@ export default {
     ],
   },
 
+  loading: { color: '#fa923f', duration: 5000 },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ['~assets/styles/main.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -44,9 +46,21 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    // https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCpKRInQFgiuwSBGTm9ipcKH9qtIXmNx54
+    // https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCpKRInQFgiuwSBGTm9ipcKH9qtIXmNx54
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  env: {
+    API_KEY: process.env.API_KEY || 'AIzaSyCpKRInQFgiuwSBGTm9ipcKH9qtIXmNx54',
+    AUTH_BASE_URL: 'https://identitytoolkit.googleapis.com/v1/accounts:',
+    BASE_URL:
+      'https://nuxt-blog-66f91-default-rtdb.europe-west1.firebasedatabase.app',
+  },
+  transition: {
+    name: 'fade',
+    mode: 'out-in',
+  },
 };

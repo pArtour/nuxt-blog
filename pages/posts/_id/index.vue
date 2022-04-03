@@ -22,7 +22,7 @@ export default {
     const postId = context.params.id;
     try {
       const post = await context.$axios.$get(
-        `https://nuxt-blog-66f91-default-rtdb.europe-west1.firebasedatabase.app/posts/${postId}.json`
+        `${process.env.BASE_URL}/posts/${postId}.json`
       );
       return { post };
     } catch (error) {

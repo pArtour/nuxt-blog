@@ -13,7 +13,7 @@ export default {
     AdminPostForm,
   },
   layout: 'AdminLayout',
-
+  middleware: ['check-auth', 'auth'],
   data() {
     return {
       post: {
